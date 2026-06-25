@@ -20,12 +20,7 @@ function startTest() {
 // Carica automaticamente C.json
 function loadDefaultJson() {
     fetch("C.json")
-        .then(response => {
-            if (!response.ok) {
-                throw new Error("Impossibile caricare C.json");
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(parsedData => {
 
             const selectedSet = document.getElementById('question-set').value;
