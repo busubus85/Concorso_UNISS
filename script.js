@@ -7,8 +7,13 @@ let wrongAnswers = 0;
 let questions = [];
 let answersState = [];
 
-// Avvio del test dopo scelta materia
+// Avvia il test solo dopo il click sul pulsante
 function startTest() {
+    const startButton = document.getElementById('start-button');
+
+    startButton.disabled = true;
+    startButton.textContent = 'Caricamento...';
+
     loadDefaultJson();
 }
 
@@ -30,6 +35,7 @@ function loadDefaultJson() {
 
             if (filteredQuestions.length === 0) {
                 alert("Nessuna domanda trovata per questa materia.");
+                resetStartButton();
                 return;
             }
 
@@ -45,17 +51,32 @@ function loadDefaultJson() {
             correctAnswers = 0;
             wrongAnswers = 0;
 
+            // Nasconde menu e tasto di avvio
             document.getElementById('start-menu').classList.add('hidden');
+
+            // Mostra quiz solo ora
             document.getElementById('quiz-area').classList.remove('hidden');
+
+            document.getElementById('navigation-container').style.display = 'flex';
+            document.getElementById('result-container').innerHTML = '';
 
             createNavBar();
             displayQuestion();
             updateCounters();
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         })
         .catch(error => {
             console.error(error);
             alert("Errore nel caricamento di C.json. Controlla che il file sia nella stessa cartella di index.html.");
+            resetStartButton();
         });
+}
+
+function resetStartButton() {
+    const startButton = document.getElementById('start-button');
+    startButton.disabled = false;
+    startButton.textContent = 'Inizia il test';
 }
 
 // Estrae domande casuali
@@ -97,7 +118,7 @@ function displayQuestion() {
         if (answersState[currentQuestion] !== null) {
             if (answer === q.correctAnswer) {
                 extraClass = "answer-correct";
-            } else if (answersState[currentQuestion]?.selected === answer) {
+            } else if (answersState[currentQuestion].selected === answer) {
                 extraClass = "answer-wrong";
             }
         }
@@ -157,13 +178,13 @@ function checkAnswer(index) {
     displayQuestion();
 }
 
-// Messaggio feedback
+// Feedback
 function showFeedback(message, className) {
     document.getElementById('feedback-container').innerHTML =
         `<p class="${className}">${message}</p>`;
 }
 
-// Crea barra domande 1-60
+// Crea barra domande
 function createNavBar() {
     const nav = document.getElementById('nav-bar');
     nav.innerHTML = '';
@@ -218,7 +239,7 @@ function updateCounters() {
     document.getElementById('score-mini').textContent = `Punteggio: ${correctAnswers}`;
 }
 
-// Risultato finale
+// Mostra risultato finale
 function showResult() {
     const total = questions.length;
     const score = correctAnswers;
@@ -240,6 +261,8 @@ function showResult() {
     document.getElementById('answers-container').innerHTML = '';
     document.getElementById('feedback-container').innerHTML = '';
     document.getElementById('navigation-container').style.display = 'none';
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // Avanti
@@ -274,7 +297,15 @@ function restartTest() {
     document.getElementById('start-menu').classList.remove('hidden');
 
     document.getElementById('result-container').innerHTML = '';
+    document.getElementById('question-container').innerHTML = '';
+    document.getElementById('answers-container').innerHTML = '';
+    document.getElementById('feedback-container').innerHTML = '';
+    document.getElementById('nav-bar').innerHTML = '';
+
     document.getElementById('navigation-container').style.display = 'flex';
 
+    resetStartButton();
     updateCounters();
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
