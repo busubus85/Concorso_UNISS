@@ -8,49 +8,60 @@
 </head>
 <body>
 
-<h2>Quiz App</h2>
+<div class="app">
 
-<div class="menu">
+    <header>
+        <h1>Quiz App</h1>
+        <p class="subtitle">Seleziona una materia e avvia il test</p>
+    </header>
 
-    <label for="question-set">Seleziona materia:</label>
-    <select id="question-set">
-        <option value="1-220">Legge 240</option>
-        <option value="221-351">Statuto Uniss</option>
-        <option value="352-420">RAFC</option>
-        <option value="421-1270">241, ANAC</option>
-        <option value="1271-1670">165</option>
-        <option value="1671-2000">Contabilità</option>
-        <option value="1-2000">TUTTO</option>
-    </select>
+    <div class="menu" id="start-menu">
 
-</div>
+        <label for="question-set">Materia</label>
 
-<hr>
+        <select id="question-set">
+            <option value="1-220">Legge 240</option>
+            <option value="221-351">Statuto Uniss</option>
+            <option value="352-420">RAFC</option>
+            <option value="421-1270">241, ANAC, Contratti</option>
+            <option value="1271-1670">165, comportamento dipendenti pubblici</option>
+            <option value="1671-2000">Contabilità</option>
+            <option value="1-2000">TUTTO</option>
+        </select>
 
-<div class="container">
+        <button id="start-button" onclick="startTest()">Inizia test</button>
 
-    <div id="question-container"></div>
-
-    <div id="answers-container"></div>
-
-    <div id="feedback-container"></div>
-
-    <div id="navigation-container">
-        <button onclick="prevQuestion()">⬅ Indietro</button>
-        <button onclick="nextQuestion()">Avanti ➡</button>
     </div>
 
-    <div id="nav-bar"></div>
+    <div id="quiz-area" class="hidden">
 
-    <hr>
+        <div id="top-bar">
+            <div id="question-progress">Domanda 1/60</div>
+            <div id="score-mini">Punteggio: 0</div>
+        </div>
 
-    <div id="counters-container">
-        <p>✅ Corrette: <span id="correct-count">0</span></p>
-        <p>❌ Sbagliate: <span id="wrong-count">0</span></p>
-        <p>🎯 Punteggio: <span id="total-score">0</span></p>
+        <div id="question-container"></div>
+
+        <div id="answers-container"></div>
+
+        <div id="feedback-container"></div>
+
+        <div id="navigation-container">
+            <button onclick="prevQuestion()" class="nav-main-btn">⬅ Indietro</button>
+            <button onclick="nextQuestion()" class="nav-main-btn primary">Avanti ➡</button>
+        </div>
+
+        <div id="nav-bar"></div>
+
+        <div id="counters-container">
+            <p>✅ Corrette: <span id="correct-count">0</span></p>
+            <p>❌ Sbagliate: <span id="wrong-count">0</span></p>
+            <p>🎯 Punteggio: <span id="total-score">0</span></p>
+        </div>
+
+        <div id="result-container"></div>
+
     </div>
-
-    <div id="result-container"></div>
 
 </div>
 
