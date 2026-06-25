@@ -1,5 +1,27 @@
 body {
-   ;    margin: 0;
+    10px;    margin: 0;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* TESTO */
+.header-text h1 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.subtitle {
+    margin: 3px 0 0 0;
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* DOMANDA */
+#question-container {
+    background: #e7f0ff;
+    border-left: 4px solid #004a99;
+    padding: 12px;
+    margin: 10px;
     border-radius: 8px;
     color: #002d5b;
     font-weight: bold;
@@ -33,7 +55,6 @@ body {
 .nav-btn {
     height: 35px;
     border: 1px solid #ccc;
-    background: white;
 }
 
 .correct-nav {
@@ -60,36 +81,19 @@ body {
     border-radius: 10px;
 }
 
-.skipped-btn {
-    padding: 6px;
-    margin: 3px;
-}
-
-/* CONTATORI */
-#counters-container {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px;
-}
-
 /* MOBILE */
 @media (max-width: 600px) {
-
     .header-inner {
         flex-direction: column;
         text-align: center;
-    }
-
-    .logo-img {
-        height: 45px;
     }
 
     #navigation-container {
         position: fixed;
         bottom: 0;
         width: 100%;
-        background: white;
         display: flex;
+        background: white;
     }
 
     .nav-main-btn {
@@ -109,52 +113,18 @@ body {
 .main-header {
     background: linear-gradient(135deg, #002d5b, #004a99);
     color: white;
-    padding: 15px;
+    padding: 14px;
     border-bottom: 4px solid #b51f1f;
 }
 
 .header-inner {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 }
 
-.logo-img {
-    height: 55px;
-}
-
-.header-text h1 {
-    margin: 0;
-    font-size: 22px;
-}
-
-.subtitle {
-    margin: 3px 0 0 0;
-    font-size: 13px;
-    opacity: 0.9;
-}
-
-/* MENU */
-.menu {
-    padding: 15px;
-}
-
-select, button {
-    width: 100%;
-    padding: 14px;
-    margin-top: 10px;
-    border-radius: 10px;
-}
-
-/* START BUTTON */
-#start-button {
-    background: #002d5b;
-    color: white;
-    border: none;
-}
-
-/* QUIZ */
-#question-container {
-    background: #e7f0ff;
-    border-left: 4px solid #004a99;
-    padding: 12px;
+/* LOGO TESTUALE */
+.logo-text {
+    background: white;
+    color: #002d5b;
+    font-weight: bold;
