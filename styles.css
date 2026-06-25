@@ -1,89 +1,169 @@
+/* RESET */
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial;
     margin: 0;
-    background: #f4f6f9;
+    font-family: Arial, sans-serif;
+    background: #f2f4f8;
+    color: #1f2933;
 }
 
 /* HEADER */
 .main-header {
-    background: #003a70;
+    background: #002d5b;
     color: white;
+    padding: 14px;
     text-align: center;
-    padding: 18px;
+}
+
+.main-header h1 {
+    margin: 0;
+    font-size: 20px;
 }
 
 .subtitle {
+    font-size: 13px;
     opacity: 0.8;
+    margin-top: 4px;
 }
 
-/* MENU */
-.menu {
-    padding: 15px;
+/* CONTENITORE */
+.app {
+    padding: 10px;
 }
 
-select, button {
+/* CARD */
+.menu, #quiz-area {
+    background: white;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 10px;
+}
+
+/* FORM */
+select {
     width: 100%;
     padding: 14px;
-    margin-top: 10px;
     border-radius: 10px;
+    margin-bottom: 10px;
 }
 
-/* BOTTONI */
+/* BOTTONE START */
 #start-button {
-    background: #003a70;
-    color: white;
+    width: 100%;
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 10px;
     border: none;
+    background: #002d5b;
+    color: white;
+    font-weight: bold;
+}
+
+/* TOP BAR */
+#top-bar {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-bottom: 10px;
 }
 
 /* DOMANDA */
 #question-container {
-    background: #e7f0ff;
-    padding: 12px;
-    border-left: 4px solid #003a70;
-    margin: 10px;
-    border-radius: 8px;
-}
-
-/* RISPOSTE */
-.answer-btn {
-    width: 95%;
-    margin: 8px auto;
-    display: block;
+    background: #eef4ff;
+    border-left: 4px solid #002d5b;
     padding: 12px;
     border-radius: 10px;
+    margin-bottom: 12px;
 }
 
+#question-container p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+/* RISPOSTE (IMPORTANTISSIMO PER MOBILE) */
+.answer-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 15px;
+    border-radius: 12px;
+    border: 1px solid #d0d7e2;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+/* feedback colori */
 .answer-correct {
-    background: #b8efc1;
+    background: #d4edda !important;
 }
 
 .answer-wrong {
-    background: #ffcaca;
+    background: #f8d7da !important;
 }
 
-/* NAVBAR */
+/* NAV IN BASSO (STILE APP) */
+#navigation-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    
+    display: flex;
+    gap: 5px;
+    padding: 8px;
+    
+    background: white;
+    border-top: 1px solid #ccc;
+}
+
+.nav-main-btn {
+    flex: 1;
+    padding: 16px;
+    font-size: 15px;
+    border-radius: 10px;
+    border: none;
+}
+
+.primary {
+    background: #002d5b;
+    color: white;
+}
+
+/* SPAZIO SOTTO PER NON COPRIRE CONTENUTI */
+#quiz-area {
+    padding-bottom: 80px;
+}
+
+/* NAVBAR DOMANDE */
 #nav-bar {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 4px;
+    margin-top: 12px;
 }
 
 .nav-btn {
-    background: white;
+    height: 36px;
+    font-size: 12px;
+    border-radius: 6px;
     border: 1px solid #ccc;
-    height: 35px;
 }
 
+/* COLORI NAV */
 .correct-nav {
-    background: #a5d6a7;
+    background: #81c784;
 }
 
 .wrong-nav {
-    background: #ef9a9a;
+    background: #ef5350;
 }
 
 .skipped-nav {
-    background: #ffe082;
+    background: #ffd54f;
 }
 
 .current {
@@ -94,32 +174,39 @@ select, button {
 .skipped-box {
     background: #fff3cd;
     padding: 10px;
-    margin: 10px;
     border-radius: 10px;
+    margin-top: 10px;
 }
 
 .skipped-btn {
-    margin: 3px;
     padding: 8px;
+    margin: 3px;
     border-radius: 6px;
 }
 
-/* MOBILE */
-@media (max-width: 600px) {
+/* CONTATORI */
+#counters-container {
+    font-size: 14px;
+    margin-top: 10px;
+}
 
-    #navigation-container {
-        position: fixed;
-        bottom: 0;
-        width: 100%;
-        background: white;
-        display: flex;
+#counters-container p {
+    margin: 5px 0;
+}
+
+/* DESKTOP (opzionale) */
+@media (min-width: 768px) {
+
+    .app {
+        max-width: 700px;
+        margin: auto;
     }
 
-    .nav-main-btn {
-        flex: 1;
-        padding: 14px;
-        border: none;
-        background: #003a70;
-        color: white;
+    #nav-bar {
+        grid-template-columns: repeat(8, 1fr);
+    }
+
+    #navigation-container {
+        position: static;
     }
 }
