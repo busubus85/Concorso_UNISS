@@ -1,57 +1,49 @@
-// Definizione delle variabili globali per gestire lo stato del quiz
 let currentQuestion = 0;
-const totalQuestions = 20; // Numero totale di domande che vuoi mostrare
-let score = 0;
+const totalQuestions = 60;
+
 let correctAnswers = 0;
 let wrongAnswers = 0;
-let unanswered = totalQuestions;
+
 let questions = [];
-let answersState = []; // Array per tenere traccia dello stato delle risposte
+let answersState = [];
 
-// Funzione per caricare le domande dal file JSON caricato dall'utente
-function handleFileUpload(event) {
-    const file = event.target.files[0];
-    const reader = new FileReader();
+// ✅ CARICAMENTO AUTOMATICO JSON
+function loadDefaultJson() {
 
-    reader.onload = function(event) {
-        try {
-            const jsonContent = event.target.result;
-            let parsedData = JSON.parse(jsonContent);
-            
-            // Estrai casualmente 20 domande dal JSON completo
-            questions = getRandomQuestions(parsedData.questions, totalQuestions);
+    fetch("C.json")
+        .then(res => res.json())
+        .then(parsedData => {
 
-            // Mescola le risposte di ciascuna domanda
-            questions.forEach((question) => {
-                question.answers = shuffleArray(question.answers);
+            const selectedSet = document.getElementById('question-set').value;
+            const [start, end] = selectedSet.split('-').map(Number);
+
+            const filteredQuestions = parsedData.questions.slice(start - 1, end);
+
+            questions = getRandomQuestions(filteredQuestions, totalQuestions);
+
+            questions.forEach(q => {
+                q.answers = shuffleArray(q.answers);
             });
 
-            // Inizializza lo stato delle risposte
             answersState = new Array(totalQuestions).fill(null);
+            currentQuestion = 0;
 
-            currentQuestion = 0; // Resetta l'indice delle domande
-            displayQuestion();  // Dopo aver caricato le domande, visualizza la prima domanda
-        } catch (error) {
-            console.error('Errore nel parsing del file JSON:', error);
-        }
-    };
+            correctAnswers = 0;
+            wrongAnswers = 0;
 
-    reader.readAsText(file);
+            displayQuestion();
+            createNavBar();
+            updateCounters();
+        });
 }
 
-// Funzione per estrarre casualmente un numero specificato di domande da un array
+// ✅ RANDOM
 function getRandomQuestions(allQuestions, numQuestions) {
-    // Clona l'array delle domande per non modificarlo direttamente
-    let clonedQuestions = [...allQuestions];
-
-    // Mescola l'array delle domande
-    clonedQuestions = shuffleArray(clonedQuestions);
-
-    // Limita l'array alle prime numQuestions domande mescolate
-    return clonedQuestions.slice(0, numQuestions);
+    let cloned = [...allQuestions];
+    return shuffleArray(cloned).slice(0, numQuestions);
 }
 
-// Funzione per mescolare un array (algoritmo Fisher-Yates)
+// ✅ SHUFFLE
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -60,126 +52,138 @@ function shuffleArray(array) {
     return array;
 }
 
-// Funzione per visualizzare la domanda corrente
+// ✅ MOSTRA DOMANDA
 function displayQuestion() {
+
     if (currentQuestion >= questions.length) {
-        showResult();  // Se tutte le domande sono state mostrate, mostra il risultato finale
+        showResult();
         return;
     }
-    
-    // Seleziona gli elementi DOM necessari
-    const questionContainer = document.getElementById('question-container');
-    const answersContainer = document.getElementById('answers-container');
-    const feedbackContainer = document.getElementById('feedback-container');
 
-    // Ottiene la domanda corrente dal array delle domande
-    const currentQ = questions[currentQuestion];
-    
-    // Costruisce l'HTML per la domanda corrente
-    questionContainer.innerHTML = `<p>${currentQ.question}</p>`;
+    const q = questions[currentQuestion];
 
-    // Costruisce l'HTML per le risposte possibili (già mescolate casualmente)
-    let answersHtml = '';
-    currentQ.answers.forEach((answer, index) => {
-        answersHtml += `<button onclick="checkAnswer(${index})">${answer}</button>`;
+    document.getElementById('question-container').innerHTML =
+        `<p>${currentQuestion + 1}/60 - ${q.question}</p>`;
+
+    let html = '';
+
+    q.answers.forEach((ans, index) => {
+        html += `<button onclick="checkAnswer(${index})">${ans}</button>`;
     });
-    answersContainer.innerHTML = answersHtml;
 
-    // Svuota il feedback container
-    feedbackContainer.innerHTML = '';
+    document.getElementById('answers-container').innerHTML = html;
+    document.getElementById('feedback-container').innerHTML = '';
+
+    updateNavBar();
 }
 
-// Funzione per verificare la risposta data dall'utente
+// ✅ RISPOSTA
 function checkAnswer(index) {
-    const selectedQuestion = questions[currentQuestion];
-    const selectedAnswer = selectedQuestion.answers[index];
-    const previousAnswer = answersState[currentQuestion];
 
-    // Controlla se la risposta è corretta
-    if (selectedAnswer === selectedQuestion.correctAnswer) {
-        if (previousAnswer !== 'correct') {
-            if (previousAnswer === 'incorrect') {
-                score += 1.25; // Correct answer now, was previously incorrect
-                wrongAnswers -= 1;
-            } else if (previousAnswer === null) {
-                score += 1; // Correct answer now, was previously unanswered
-                unanswered -= 1;
-            }
-            correctAnswers += 1;
-            showFeedback('Corretto!', 'correct');
-            answersState[currentQuestion] = 'correct';
-        }
+    if (answersState[currentQuestion] !== null) return;
+
+    const q = questions[currentQuestion];
+    const selected = q.answers[index];
+
+    if (selected === q.correctAnswer) {
+        correctAnswers++;
+        answersState[currentQuestion] = 'correct';
+        showFeedback('✅ Corretto!', 'correct');
     } else {
-        if (previousAnswer !== 'incorrect') {
-            if (previousAnswer === 'correct') {
-                score -= 1.25; // Incorrect answer now, was previously correct
-                correctAnswers -= 1;
-            } else if (previousAnswer === null) {
-                score -= 0.25; // Incorrect answer now, was previously unanswered
-                unanswered -= 1;
-            }
-            wrongAnswers += 1;
-            showFeedback(`Sbagliato! La risposta corretta è: ${selectedQuestion.correctAnswer}`, 'incorrect');
-            answersState[currentQuestion] = 'incorrect';
-        }
+        wrongAnswers++;
+        answersState[currentQuestion] = 'incorrect';
+        showFeedback(`❌ Sbagliato! Risposta corretta: ${q.correctAnswer}`, 'incorrect');
     }
 
-    // Passa alla domanda successiva dopo un breve periodo di tempo
-    setTimeout(() => {
-        currentQuestion += 1;
-        displayQuestion();
-    }, 2000); // Passa alla domanda successiva dopo 2 secondi
+    updateCounters();
+    updateNavBar();
 }
 
-// Funzione per mostrare il feedback sulla risposta
-function showFeedback(message, className) {
-    const feedbackContainer = document.getElementById('feedback-container');
-    feedbackContainer.innerHTML = `<p class="${className}">${message}</p>`;
+// ✅ FEEDBACK
+function showFeedback(msg, cls) {
+    document.getElementById('feedback-container').innerHTML =
+        `<p class="${cls}">${msg}</p>`;
 }
 
-// Funzione per mostrare il risultato finale del quiz
+// ✅ NAVBAR
+function createNavBar() {
+    const nav = document.getElementById('nav-bar');
+    nav.innerHTML = '';
+
+    for (let i = 0; i < totalQuestions; i++) {
+        const btn = document.createElement('button');
+        btn.className = 'nav-btn';
+        btn.innerText = i + 1;
+
+        btn.onclick = () => {
+            currentQuestion = i;
+            displayQuestion();
+        };
+
+        nav.appendChild(btn);
+    }
+}
+
+// ✅ AGGIORNA COLORI NAVBAR
+function updateNavBar() {
+
+    const buttons = document.querySelectorAll('#nav-bar button');
+
+    buttons.forEach((btn, i) => {
+
+        btn.classList.remove('answered', 'current');
+
+        if (answersState[i] !== null) {
+            btn.classList.add('answered');
+        }
+
+        if (i === currentQuestion) {
+            btn.classList.add('current');
+        }
+    });
+}
+
+// ✅ CONTATORI
+function updateCounters() {
+    document.getElementById('correct-count').textContent = correctAnswers;
+    document.getElementById('wrong-count').textContent = wrongAnswers;
+    document.getElementById('total-score').textContent = correctAnswers;
+}
+
+// ✅ RISULTATO FINALE
 function showResult() {
-    const resultContainer = document.getElementById('result-container');
 
-    // Calcola il punteggio totale
-    const totalScore = score;
+    const total = totalQuestions;
+    const score = correctAnswers;
 
-    resultContainer.innerHTML = `
-        <h2>Risultato del Quiz</h2>
-        <p>Risposte corrette: ${correctAnswers}</p>
-        <p>Risposte sbagliate: ${wrongAnswers}</p>
-        <p>Risposte non date: ${unanswered}</p>
-        <p>Punteggio totale: ${totalScore.toFixed(2)}</p>
+    document.getElementById('result-container').innerHTML = `
+        <h2>Report finale</h2>
+        <p>✅ Corrette: ${correctAnswers}</p>
+        <p>❌ Sbagliate: ${wrongAnswers}</p>
+        <hr>
+        <p><strong>Punteggio: ${score} / ${total}</strong></p>
+        <p>Percentuale: ${((score / total) * 100).toFixed(2)}%</p>
     `;
-
-    // Nasconde i pulsanti di navigazione alla fine del quiz
-    const navigationContainer = document.getElementById('navigation-container');
-    navigationContainer.style.display = 'none';
 }
 
-// Funzione per tornare alla domanda precedente
+// ✅ NAVIGAZIONE
+function nextQuestion() {
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        displayQuestion();
+    } else {
+        showResult();
+    }
+}
+
 function prevQuestion() {
     if (currentQuestion > 0) {
-        currentQuestion -= 1;
+        currentQuestion--;
         displayQuestion();
-
-        // Svuota il feedback container quando si passa alla domanda precedente
-        const feedbackContainer = document.getElementById('feedback-container');
-        feedbackContainer.innerHTML = '';
     }
 }
 
-// Funzione per passare alla domanda successiva
-function nextQuestion() {
-    if (currentQuestion < questions.length) {
-        currentQuestion += 1;
-        displayQuestion();
-
-        // Svuota il feedback container quando si passa alla domanda successiva
-        const feedbackContainer = document.getElementById('feedback-container');
-        feedbackContainer.innerHTML = '';
-    }
-}
-
-// Aggiungi un event listener per gestire il caricamento del file
-document.getElementById('file-input').addEventListener('change', handleFileUpload);
+// ✅ AVVIO AUTOMATICO
+window.onload = function () {
+    loadDefaultJson();
+};
