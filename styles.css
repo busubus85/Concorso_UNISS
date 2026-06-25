@@ -1,47 +1,8 @@
 body {
-    font-family: Arial;
-    margin: 0;
-    background: #f4f6f9;
-}
-
-/* HEADER */
-.main-header {
-    background: #003a70;
-    color: white;
-    text-align: center;
-    padding: 18px;
-}
-
-.subtitle {
-    opacity: 0.8;
-}
-
-/* MENU */
-.menu {
-    padding: 15px;
-}
-
-select, button {
-    width: 100%;
-    padding: 14px;
-    margin-top: 10px;
-    border-radius: 10px;
-}
-
-/* BOTTONI */
-#start-button {
-    background: #003a70;
-    color: white;
-    border: none;
-}
-
-/* DOMANDA */
-#question-container {
-    background: #e7f0ff;
-    padding: 12px;
-    border-left: 4px solid #003a70;
-    margin: 10px;
+   ;    margin: 0;
     border-radius: 8px;
+    color: #002d5b;
+    font-weight: bold;
 }
 
 /* RISPOSTE */
@@ -51,6 +12,7 @@ select, button {
     display: block;
     padding: 12px;
     border-radius: 10px;
+    border: 1px solid #ccc;
 }
 
 .answer-correct {
@@ -69,9 +31,9 @@ select, button {
 }
 
 .nav-btn {
-    background: white;
-    border: 1px solid #ccc;
     height: 35px;
+    border: 1px solid #ccc;
+    background: white;
 }
 
 .correct-nav {
@@ -99,13 +61,28 @@ select, button {
 }
 
 .skipped-btn {
+    padding: 6px;
     margin: 3px;
-    padding: 8px;
-    border-radius: 6px;
+}
+
+/* CONTATORI */
+#counters-container {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
 }
 
 /* MOBILE */
 @media (max-width: 600px) {
+
+    .header-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .logo-img {
+        height: 45px;
+    }
 
     #navigation-container {
         position: fixed;
@@ -118,8 +95,66 @@ select, button {
     .nav-main-btn {
         flex: 1;
         padding: 14px;
-        border: none;
-        background: #003a70;
+        background: #002d5b;
         color: white;
+        border: none;
     }
 }
+
+    font-family: Arial;
+    background: #f4f6f9;
+}
+
+/* HEADER */
+.main-header {
+    background: linear-gradient(135deg, #002d5b, #004a99);
+    color: white;
+    padding: 15px;
+    border-bottom: 4px solid #b51f1f;
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-img {
+    height: 55px;
+}
+
+.header-text h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.subtitle {
+    margin: 3px 0 0 0;
+    font-size: 13px;
+    opacity: 0.9;
+}
+
+/* MENU */
+.menu {
+    padding: 15px;
+}
+
+select, button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+/* START BUTTON */
+#start-button {
+    background: #002d5b;
+    color: white;
+    border: none;
+}
+
+/* QUIZ */
+#question-container {
+    background: #e7f0ff;
+    border-left: 4px solid #004a99;
+    padding: 12px;
