@@ -8,7 +8,7 @@ let questions = [];
 let answersState = [];
 let skippedQuestions = new Set();
 
-// ✅ collega il bottone in modo sicuro
+// ✅ collega bottone start
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('start-button')
         .addEventListener('click', startTest);
@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ✅ AVVIO TEST
 function startTest() {
-    console.log("Start cliccato ✅");
 
     const btn = document.getElementById('start-button');
 
@@ -28,6 +27,7 @@ function startTest() {
 
 // ✅ CARICA JSON
 function loadDefaultJson() {
+
     fetch("C.json")
         .then(res => res.json())
         .then(data => {
@@ -56,7 +56,7 @@ function loadDefaultJson() {
             correctAnswers = 0;
             wrongAnswers = 0;
 
-            // ✅ UI
+            // UI
             document.getElementById('start-menu').classList.add('hidden');
             document.getElementById('quiz-area').classList.remove('hidden');
 
@@ -65,18 +65,14 @@ function loadDefaultJson() {
             updateCounters();
             updateSkippedBox();
 
-            // ✅ scroll top
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
+            window.scrollTo({ top: 0 });
         })
         .catch(err => {
             console.error("Errore JSON:", err);
-            alert("Errore nel caricamento del file JSON");
             resetStartButton();
         });
 }
 
-// ✅ RESET BOTTONE
 function resetStartButton() {
     const btn = document.getElementById('start-button');
     btn.disabled = false;
@@ -131,6 +127,7 @@ function checkAnswer(i) {
         answersState[currentQuestion] = { status: 'incorrect', selected };
     }
 
+    // ✅ rimuove dalla lista saltate
     skippedQuestions.delete(currentQuestion);
 
     updateCounters();
@@ -140,7 +137,10 @@ function checkAnswer(i) {
 // ✅ NAVIGAZIONE
 function nextQuestion() {
 
-    if (answersState[currentQuestion] === null) {
+    // ✅ aggiunge SOLO se non risposta e NON già presente
+    if (answersState[currentQuestion] === null
+        && !skippedQuestions.has(currentQuestion)) {
+
         skippedQuestions.add(currentQuestion);
     }
 
@@ -161,6 +161,7 @@ function prevQuestion() {
 
 // ✅ NAVBAR
 function createNavBar() {
+
     const nav = document.getElementById('nav-bar');
     nav.innerHTML = '';
 
@@ -179,6 +180,7 @@ function createNavBar() {
 }
 
 function updateNavBar() {
+
     const btns = document.querySelectorAll('#nav-bar button');
 
     btns.forEach((b, i) => {
@@ -200,7 +202,7 @@ function updateNavBar() {
     });
 }
 
-// ✅ BOX SALTATE
+// ✅ BOX SALTATE (solo quelle realmente non risposte)
 function updateSkippedBox() {
 
     const c = document.getElementById("skipped-container");
@@ -214,7 +216,7 @@ function updateSkippedBox() {
         return;
     }
 
-    let html = `<div class="skipped-box"><b>Domande da riprendere</b><br>`;
+    let html = `<div class="skipped-box"><b>Domande da riprendere:</b><br>`;
 
     arr.forEach(i => {
         html += `<button class="skipped-btn" onclick="goToSkipped(${i})">${i + 1}</button>`;
@@ -225,6 +227,7 @@ function updateSkippedBox() {
     c.innerHTML = html;
 }
 
+// ✅ TORNA ALLA DOMANDA
 function goToSkipped(i) {
     currentQuestion = i;
     displayQuestion();
