@@ -1,30 +1,47 @@
 body {
-    10px;    margin: 0;
-    border-radius: 5px;
-    font-size: 14px;
+    font-family: Arial;
+    margin: 0;
+    background: #f4f6f9;
 }
 
-/* TESTO */
-.header-text h1 {
-    margin: 0;
-    font-size: 20px;
+/* HEADER */
+.main-header {
+    background: #003a70;
+    color: white;
+    text-align: center;
+    padding: 18px;
 }
 
 .subtitle {
-    margin: 3px 0 0 0;
-    font-size: 13px;
     opacity: 0.8;
+}
+
+/* MENU */
+.menu {
+    padding: 15px;
+}
+
+select, button {
+    width: 100%;
+    padding: 14px;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+/* BOTTONI */
+#start-button {
+    background: #003a70;
+    color: white;
+    border: none;
 }
 
 /* DOMANDA */
 #question-container {
     background: #e7f0ff;
-    border-left: 4px solid #004a99;
     padding: 12px;
+    border-left: 4px solid #003a70;
     margin: 10px;
     border-radius: 8px;
-    color: #002d5b;
-    font-weight: bold;
 }
 
 /* RISPOSTE */
@@ -34,7 +51,6 @@ body {
     display: block;
     padding: 12px;
     border-radius: 10px;
-    border: 1px solid #ccc;
 }
 
 .answer-correct {
@@ -53,8 +69,9 @@ body {
 }
 
 .nav-btn {
-    height: 35px;
+    background: white;
     border: 1px solid #ccc;
+    height: 35px;
 }
 
 .correct-nav {
@@ -81,50 +98,28 @@ body {
     border-radius: 10px;
 }
 
+.skipped-btn {
+    margin: 3px;
+    padding: 8px;
+    border-radius: 6px;
+}
+
 /* MOBILE */
 @media (max-width: 600px) {
-    .header-inner {
-        flex-direction: column;
-        text-align: center;
-    }
 
     #navigation-container {
         position: fixed;
         bottom: 0;
         width: 100%;
-        display: flex;
         background: white;
+        display: flex;
     }
 
     .nav-main-btn {
         flex: 1;
         padding: 14px;
-        background: #002d5b;
-        color: white;
         border: none;
+        background: #003a70;
+        color: white;
     }
 }
-
-    font-family: Arial;
-    background: #f4f6f9;
-}
-
-/* HEADER */
-.main-header {
-    background: linear-gradient(135deg, #002d5b, #004a99);
-    color: white;
-    padding: 14px;
-    border-bottom: 4px solid #b51f1f;
-}
-
-.header-inner {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-/* LOGO TESTUALE */
-.logo-text {
-    background: white;
-    color: #002d5b;
-    font-weight: bold;
