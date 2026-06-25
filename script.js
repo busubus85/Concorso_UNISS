@@ -8,10 +8,7 @@ let questions = [];
 let answersState = [];
 let skippedQuestions = new Set();
 
-// ✅ CLICK START TEST
 function startTest() {
-    console.log("Click funziona");
-
     const btn = document.getElementById('start-button');
 
     btn.disabled = true;
@@ -20,9 +17,7 @@ function startTest() {
     loadDefaultJson();
 }
 
-// ✅ CARICA JSON
 function loadDefaultJson() {
-
     fetch("C.json")
         .then(res => res.json())
         .then(data => {
@@ -31,12 +26,6 @@ function loadDefaultJson() {
             const [start, end] = selectedSet.split('-').map(Number);
 
             const filtered = data.questions.slice(start - 1, end);
-
-            if (filtered.length === 0) {
-                alert("Nessuna domanda trovata per questa materia");
-                resetStartButton();
-                return;
-            }
 
             questions = shuffleArray([...filtered]).slice(0, totalQuestions);
 
@@ -51,31 +40,40 @@ function loadDefaultJson() {
             correctAnswers = 0;
             wrongAnswers = 0;
 
-            // ✅ NASCONDI MENU
             document.getElementById('start-menu').classList.add('hidden');
-
-            // ✅ MOSTRA QUIZ
             document.getElementById('quiz-area').classList.remove('hidden');
 
             createNavBar();
             displayQuestion();
             updateCounters();
-            updateSkippedBox();
-
         })
         .catch(err => {
-            console.error("Errore reale:", err);
-            resetStartButton();
+            console.error("Errore JSON:", err);
         });
 }
 
-function resetStartButton() {
-    const btn = document.getElementById('start-button');
-    btn.disabled = false;
-    btn.textContent = 'Inizia il test';
+// NAVIGAZIONE
+function nextQuestion() {
+    if (answersState[currentQuestion] === null) {
+        skippedQuestions.add(currentQuestion);
+    }
+
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        displayQuestion();
+    } else {
+        showResult();
+    }
 }
 
-// ✅ DOMANDA
+function prevQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        displayQuestion();
+    }
+}
+
+// DOMANDA
 function displayQuestion() {
 
     const q = questions[currentQuestion];
@@ -107,7 +105,7 @@ function displayQuestion() {
     updateSkippedBox();
 }
 
-// ✅ RISPOSTA
+// RISPOSTA
 function checkAnswer(i) {
 
     if (answersState[currentQuestion] !== null) return;
@@ -129,33 +127,10 @@ function checkAnswer(i) {
     displayQuestion();
 }
 
-// ✅ NAVIGAZIONE
-function nextQuestion() {
-
-    if (answersState[currentQuestion] === null) {
-        skippedQuestions.add(currentQuestion);
-    }
-
-    if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
-        displayQuestion();
-    } else {
-        showResult();
-    }
-}
-
-function prevQuestion() {
-    if (currentQuestion > 0) {
-        currentQuestion--;
-        displayQuestion();
-    }
-}
-
-// ✅ NAVBAR DOMANDE
+// NAVBAR
 function createNavBar() {
-
     const nav = document.getElementById('nav-bar');
-    nav.innerHTML = '';
+    nav.innerHTML = "";
 
     for (let i = 0; i < questions.length; i++) {
         const b = document.createElement('button');
@@ -172,11 +147,9 @@ function createNavBar() {
 }
 
 function updateNavBar() {
-
     const btns = document.querySelectorAll('#nav-bar button');
 
     btns.forEach((b, i) => {
-
         b.className = "nav-btn";
 
         if (answersState[i]) {
@@ -194,7 +167,7 @@ function updateNavBar() {
     });
 }
 
-// ✅ BOX SALTATE
+// BOX SALTATE
 function updateSkippedBox() {
 
     const c = document.getElementById("skipped-container");
@@ -224,14 +197,14 @@ function goToSkipped(i) {
     displayQuestion();
 }
 
-// ✅ CONTATORI
+// CONTATORI
 function updateCounters() {
     document.getElementById('correct-count').textContent = correctAnswers;
     document.getElementById('wrong-count').textContent = wrongAnswers;
     document.getElementById('total-score').textContent = correctAnswers;
 }
 
-// ✅ RISULTATO
+// RISULTATO
 function showResult() {
     document.getElementById('result-container').innerHTML = `
         <h2>Risultato finale</h2>
@@ -240,7 +213,7 @@ function showResult() {
     `;
 }
 
-// ✅ UTILITY
+// UTILITY
 function shuffleArray(a) {
     for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
