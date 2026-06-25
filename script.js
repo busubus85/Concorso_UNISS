@@ -46,10 +46,10 @@ function loadDefaultJson() {
             correctAnswers = 0;
             wrongAnswers = 0;
 
-            // Nasconde menu e tasto di avvio
+            // Nasconde menu iniziale e tasto "Inizia il test"
             document.getElementById('start-menu').classList.add('hidden');
 
-            // Mostra quiz solo ora
+            // Mostra il quiz solo dopo il click
             document.getElementById('quiz-area').classList.remove('hidden');
 
             document.getElementById('navigation-container').style.display = 'flex';
@@ -62,12 +62,17 @@ function loadDefaultJson() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         })
         .catch(error => {
-            console.error(error);
-            alert("Errore nel caricamento di C.json. Controlla che il file sia nella stessa cartella di index.html.");
+            console.error("Errore reale nel caricamento o parsing di C.json:", error);
+
             resetStartButton();
+
+            // Non mostro alert tecnico insistente all'utente.
+            // Se vuoi riattivarlo, decommenta la riga sotto:
+            // alert("Errore nel caricamento di C.json.");
         });
 }
 
+// Ripristina il pulsante iniziale se qualcosa va storto
 function resetStartButton() {
     const startButton = document.getElementById('start-button');
     startButton.disabled = false;
@@ -179,7 +184,7 @@ function showFeedback(message, className) {
         `<p class="${className}">${message}</p>`;
 }
 
-// Crea barra domande
+// Crea barra numerica domande
 function createNavBar() {
     const nav = document.getElementById('nav-bar');
     nav.innerHTML = '';
@@ -201,7 +206,7 @@ function createNavBar() {
     updateNavBar();
 }
 
-// Aggiorna colori barra
+// Aggiorna colori barra numerica
 function updateNavBar() {
     const buttons = document.querySelectorAll('#nav-bar button');
 
