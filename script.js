@@ -8,7 +8,16 @@ let questions = [];
 let answersState = [];
 let skippedQuestions = new Set();
 
+// ✅ collega il bottone in modo sicuro
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('start-button')
+        .addEventListener('click', startTest);
+});
+
+// ✅ AVVIO TEST
 function startTest() {
+    console.log("Start cliccato ✅");
+
     const btn = document.getElementById('start-button');
 
     btn.disabled = true;
@@ -17,6 +26,7 @@ function startTest() {
     loadDefaultJson();
 }
 
+// ✅ CARICA JSON
 function loadDefaultJson() {
     fetch("C.json")
         .then(res => res.json())
@@ -26,6 +36,12 @@ function loadDefaultJson() {
             const [start, end] = selectedSet.split('-').map(Number);
 
             const filtered = data.questions.slice(start - 1, end);
+
+            if (filtered.length === 0) {
+                alert("Nessuna domanda trovata");
+                resetStartButton();
+                return;
+            }
 
             questions = shuffleArray([...filtered]).slice(0, totalQuestions);
 
@@ -40,40 +56,34 @@ function loadDefaultJson() {
             correctAnswers = 0;
             wrongAnswers = 0;
 
+            // ✅ UI
             document.getElementById('start-menu').classList.add('hidden');
             document.getElementById('quiz-area').classList.remove('hidden');
 
             createNavBar();
             displayQuestion();
             updateCounters();
+            updateSkippedBox();
+
+            // ✅ scroll top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
         })
         .catch(err => {
             console.error("Errore JSON:", err);
+            alert("Errore nel caricamento del file JSON");
+            resetStartButton();
         });
 }
 
-// NAVIGAZIONE
-function nextQuestion() {
-    if (answersState[currentQuestion] === null) {
-        skippedQuestions.add(currentQuestion);
-    }
-
-    if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
-        displayQuestion();
-    } else {
-        showResult();
-    }
+// ✅ RESET BOTTONE
+function resetStartButton() {
+    const btn = document.getElementById('start-button');
+    btn.disabled = false;
+    btn.textContent = "Inizia il test";
 }
 
-function prevQuestion() {
-    if (currentQuestion > 0) {
-        currentQuestion--;
-        displayQuestion();
-    }
-}
-
-// DOMANDA
+// ✅ DOMANDA
 function displayQuestion() {
 
     const q = questions[currentQuestion];
@@ -105,7 +115,7 @@ function displayQuestion() {
     updateSkippedBox();
 }
 
-// RISPOSTA
+// ✅ RISPOSTA
 function checkAnswer(i) {
 
     if (answersState[currentQuestion] !== null) return;
@@ -127,10 +137,32 @@ function checkAnswer(i) {
     displayQuestion();
 }
 
-// NAVBAR
+// ✅ NAVIGAZIONE
+function nextQuestion() {
+
+    if (answersState[currentQuestion] === null) {
+        skippedQuestions.add(currentQuestion);
+    }
+
+    if (currentQuestion < questions.length - 1) {
+        currentQuestion++;
+        displayQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function prevQuestion() {
+    if (currentQuestion > 0) {
+        currentQuestion--;
+        displayQuestion();
+    }
+}
+
+// ✅ NAVBAR
 function createNavBar() {
     const nav = document.getElementById('nav-bar');
-    nav.innerHTML = "";
+    nav.innerHTML = '';
 
     for (let i = 0; i < questions.length; i++) {
         const b = document.createElement('button');
@@ -150,6 +182,7 @@ function updateNavBar() {
     const btns = document.querySelectorAll('#nav-bar button');
 
     btns.forEach((b, i) => {
+
         b.className = "nav-btn";
 
         if (answersState[i]) {
@@ -167,7 +200,7 @@ function updateNavBar() {
     });
 }
 
-// BOX SALTATE
+// ✅ BOX SALTATE
 function updateSkippedBox() {
 
     const c = document.getElementById("skipped-container");
@@ -197,14 +230,14 @@ function goToSkipped(i) {
     displayQuestion();
 }
 
-// CONTATORI
+// ✅ CONTATORI
 function updateCounters() {
     document.getElementById('correct-count').textContent = correctAnswers;
     document.getElementById('wrong-count').textContent = wrongAnswers;
     document.getElementById('total-score').textContent = correctAnswers;
 }
 
-// RISULTATO
+// ✅ RISULTATO
 function showResult() {
     document.getElementById('result-container').innerHTML = `
         <h2>Risultato finale</h2>
@@ -213,7 +246,7 @@ function showResult() {
     `;
 }
 
-// UTILITY
+// ✅ SHUFFLE
 function shuffleArray(a) {
     for (let i = a.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
