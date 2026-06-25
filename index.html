@@ -1,67 +1,19 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz App</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+    <meta charset="UTF="nav-bar"></div>    <meta charset="UTF-8">
 
-<div class="app">
+            <div id="counters-container">
+                <p>✅ Corrette: <span id="correct-count">0</span></p>
+                <p>❌ Sbagliate: <span id="wrong-count">0</span></p>
+                <p>🎯 Punteggio: <span id="total-score">0</span></p>
+            </div>
 
-    <header>
-        <h1>Quiz App</h1>
-        <p class="subtitle">Seleziona una materia e avvia il test</p>
-    </header>
+            <div id="result-container"></div>
 
-    <div class="menu" id="start-menu">
+        </section>
 
-        <label for="question-set">Materia</label>
-
-        <select id="question-set">
-            <option value="1-220">Legge 240</option>
-            <option value="221-351">Statuto Uniss</option>
-            <option value="352-420">RAFC</option>
-            <option value="421-1270">241, ANAC, Contratti</option>
-            <option value="1271-1670">165, comportamento dipendenti pubblici</option>
-            <option value="1671-2000">Contabilità</option>
-            <option value="1-2000">TUTTO</option>
-        </select>
-
-        <button id="start-button" onclick="startTest()">Inizia test</button>
-
-    </div>
-
-    <div id="quiz-area" class="hidden">
-
-        <div id="top-bar">
-            <div id="question-progress">Domanda 1/60</div>
-            <div id="score-mini">Punteggio: 0</div>
-        </div>
-
-        <div id="question-container"></div>
-
-        <div id="answers-container"></div>
-
-        <div id="feedback-container"></div>
-
-        <div id="navigation-container">
-            <button onclick="prevQuestion()" class="nav-main-btn">⬅ Indietro</button>
-            <button onclick="nextQuestion()" class="nav-main-btn primary">Avanti ➡</button>
-        </div>
-
-        <div id="nav-bar"></div>
-
-        <div id="counters-container">
-            <p>✅ Corrette: <span id="correct-count">0</span></p>
-            <p>❌ Sbagliate: <span id="wrong-count">0</span></p>
-            <p>🎯 Punteggio: <span id="total-score">0</span></p>
-        </div>
-
-        <div id="result-container"></div>
-
-    </div>
+    </main>
 
 </div>
 
@@ -69,3 +21,54 @@
 
 </body>
 </html>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutti Insieme in UNISS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app">
+
+    <header class="main-header">
+        <h1>Tutti Insieme in UNISS</h1>
+        <p class="subtitle">Simulatore di quiz per la preparazione al concorso</p>
+    </header>
+
+    <main>
+
+        <section class="menu" id="start-menu">
+
+            <label for="question-set">Seleziona la materia</label>
+
+            <select id="question-set">
+                <option value="1-220">Legge 240</option>
+                <option value="221-351">Statuto Uniss</option>
+                <option value="352-420">RAFC</option>
+                <option value="421-1270">241, ANAC, Contratti</option>
+                <option value="1271-1670">165, comportamento dipendenti pubblici</option>
+                <option value="1671-2000">Contabilità</option>
+                <option value="1-2000">TUTTO</option>
+            </select>
+
+            <button id="start-button" onclick="startTest()">Inizia il test</button>
+
+        </section>
+
+        <section id="quiz-area" class="hidden">
+
+            <div id="top-bar">
+                <div id="question-progress">Domanda 1/60</div>
+                <div id="score-mini">Punteggio: 0</div>
+            </div>
+
+            <div id="question-container"></div>
+
+            <div id="answers-container"></div>
+
+            <div id="feedback-container"></div>
+
+            <div id="navigation-container">
+                <button onclick="prevQuestion()" class="nav-main-btn">⬅ Indietro</button>
+                <button onclick="nextQuestion()" class="nav-main-btn primary">Avanti ➡</button>
+            </div>
+
