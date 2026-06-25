@@ -1,27 +1,34 @@
 <!DOCTYPE html>
-<html langISS</div><html lang="it">
+<html lang="it">
 
-            <div class="header-text">
-                <h1>Tutti Insieme in UNISS</h1>
-                <p class="subtitle">Simulatore di quiz per il concorso</p>
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutti Insieme in UNISS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
 
-        </div>
+<body>
 
+<div class="app">
+
+    <header class="main-header">
+        <h1>Tutti Insieme in UNISS</h1>
+        <p class="subtitle">Simulatore di quiz</p>
     </header>
 
     <main>
 
-        <!-- MENU -->
+        <!-- MENU INIZIALE -->
         <section class="menu" id="start-menu">
 
-            <label>Seleziona la materia</label>
+            <label for="question-set">Seleziona la materia</label>
 
             <select id="question-set">
                 <option value="1-220">Legge 240</option>
                 <option value="221-351">Statuto Uniss</option>
                 <option value="352-420">RAFC</option>
-                <option value="421-1270">241, ANAC</option>
+                <option value="421-1270">241, ANAC, Contratti</option>
                 <option value="1271-1670">165</option>
                 <option value="1671-2000">Contabilità</option>
                 <option value="1-2000">TUTTO</option>
@@ -40,7 +47,9 @@
             </div>
 
             <div id="question-container"></div>
+
             <div id="answers-container"></div>
+
             <div id="feedback-container"></div>
 
             <div id="navigation-container">
@@ -48,16 +57,22 @@
                 <button onclick="nextQuestion()" class="nav-main-btn primary">Avanti ➡</button>
             </div>
 
+            <!-- 🔵 BARRA DOMANDE -->
             <div id="nav-bar"></div>
 
+            <!-- 🔴 QUI VANNO LE DOMANDE SALTATE -->
             <div id="skipped-container"></div>
 
+            <hr>
+
+            <!-- CONTATORI -->
             <div id="counters-container">
                 <p>✅ Corrette: <span id="correct-count">0</span></p>
                 <p>❌ Sbagliate: <span id="wrong-count">0</span></p>
                 <p>🎯 Punteggio: <span id="total-score">0</span></p>
             </div>
 
+            <!-- RISULTATO -->
             <div id="result-container"></div>
 
         </section>
@@ -70,21 +85,3 @@
 
 </body>
 </html>
-
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutti Insieme in UNISS</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-
-<body>
-
-<div class="app">
-
-    <!-- HEADER -->
-    <header class="main-header">
-
-        <div class="header-inner">
-
